@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🎂 День народження Олі - Збір коштів</title>
+  <title>🎂 День народження Олі 14 серпня - Збір коштів</title>
   <style type="text/css">
 
     body {
@@ -133,6 +133,54 @@
       box-shadow: 0 2px 10px rgba(255, 107, 107, 0.4);
     }
 
+    .wishlist-section {
+      margin-top: 40px;
+      text-align: center;
+      color: white;
+      max-width: 500px;
+    }
+
+    .wishlist-title {
+      font-size: 1.8em;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .wishlist {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      padding: 20px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .wishlist-item {
+      display: flex;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 16px;
+      text-align: left;
+    }
+
+    .wishlist-item:last-child {
+      border-bottom: none;
+    }
+
+    .wishlist-item::before {
+      content: "✨";
+      margin-right: 12px;
+      font-size: 18px;
+    }
+
+    .wishlist-item:nth-child(even)::before {
+      content: "💎";
+    }
+
+    .wishlist-item:nth-child(3n)::before {
+      content: "🌟";
+    }
+
   </style>
 </head>
 <body>
@@ -142,7 +190,9 @@
 
   <div class="birthday-header">
     <h1>🎉 День народження Олі 🎂</h1>
+    <h2>14 серпня</h2>
     <p>Давайте збирати кошти на подарунок!</p>
+    <p>Дедлайн: <b>1 серпня</b></p>
   </div>
 
   <div class="widget">
@@ -165,6 +215,20 @@
   <a href="#" id="donateButton" class="donate-button">
     💰 Закинути 350 грн
   </a>
+
+  <div class="wishlist-section">
+    <h2 class="wishlist-title">🎁 Список бажань Олі</h2>
+    <div class="wishlist">
+      <div class="wishlist-item">абонемент в Smartass Gym and Soul</div>
+      <div class="wishlist-item">масажер для обличчя з мікротоками</div>
+      <div class="wishlist-item">килимок аплікатор Кузнецова</div>
+      <div class="wishlist-item">татуха на лівій руці</div>
+      <div class="wishlist-item">беруші</div>
+      <div class="wishlist-item">масаж обличчя</div>
+      <div class="wishlist-item">мʼячик маленький Blackroll</div>
+      <div class="wishlist-item">якийсь прикольний йога/спорт костюм для пілатесу по типу бренду df або щось інше у стилі pilates girl</div>
+    </div>
+  </div>
 
   <script>
 
