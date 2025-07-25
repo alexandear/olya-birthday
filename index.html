@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ua">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🎂 День народження Олі - Збір коштів</title>
+  <style type="text/css">
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      margin: 0;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .birthday-header {
+      text-align: center;
+      color: white;
+      margin-bottom: 30px;
+    }
+
+    .birthday-header h1 {
+      font-size: 2.5em;
+      margin: 0;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .birthday-header p {
+      font-size: 1.2em;
+      margin: 10px 0;
+      opacity: 0.9;
+    }
+
+    .widget {
+      display: flex;
+      align-items: center;
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+      color: #fff;
+      border-radius: 20px;
+      padding: 25px;
+      width: 400px;
+      max-width: 90vw;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+    }
+
+    .qr-code > .cat {
+      margin-top: -10px;
+      width: 90px;
+      height: 90px;
+      position: absolute;
+    }
+    .qr-code > .qr {
+      margin-top: 13px;
+      margin-left: 18px;
+      width: 50px;
+      height: 50px;
+      position: relative;
+    }
+
+    .progress-info {
+      margin-left: 30px;
+      flex-grow: 1;
+    }
+
+    h3 {
+      margin: 0 0 10px 0;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .progress-bar-container {
+      background: linear-gradient(to right, #e0e0e0, #f5f5f5);
+      border-radius: 12px;
+      height: 18px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .progress-bar {
+      background: linear-gradient(45deg, #ff6b6b, #ffd93d, #6bcf7f, #4d9de0);
+      background-size: 400% 400%;
+      animation: gradient 3s ease infinite;
+      height: 100%;
+      transition: width 0.5s ease;
+    }
+
+    @keyframes gradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .progress-text {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 8px;
+      font-size: 14px;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Load configuration -->
+  <script src="config.js"></script>
+
+  <div class="birthday-header">
+    <h1>🎉 День народження Олі 🎂</h1>
+    <p>Давайте збирати кошти на подарунок!</p>
+  </div>
+
+  <div class="widget">
+    <div class="qr-code">
+      <img src="qrcat.png" class="cat" alt="Милий котик з QR кодом">
+      <img src="" class="qr" id="qrcode" alt="QR код для донатів">
+    </div>
+    <div class="progress-info">
+      <h3 id="title">Завантаження...</h3>
+      <div class="progress-bar-container">
+        <div class="progress-bar" style="width: 0%;"></div>
+      </div>
+      <div class="progress-text">
+        <span>Зібрано: 0 ₴</span>
+        <span>Мета: 0 ₴</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+
+    // jar можна отримати на сторінці генерації віджету, скопіювавши параметр longJarId з url сторінки
+    const url = "https://api.monobank.ua/bank/jar/4GC8zD2nynH4K5u1wzcKyfwJzGUTsKne";
+
+    fetch(url)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json(); // парсимо JSON отриманий від mono
+    })
+    .then((monoApi) => {
+      // елементи прогрес бару
+      const progressBar = document.querySelector('.progress-bar');
+      const progressLeft = document.querySelector('.progress-text span:first-child');
+      const progressRight = document.querySelector('.progress-text span:last-child');
+      // задаємо заголовок
+      document.getElementById("title").innerText = monoApi.title;
+      // отримуємо накопичення банки та розраховуємо відсотки
+      const progressBarAmount = (monoApi.amount / 100);
+      const progressBarGoal = (monoApi.goal / 100);
+      const progressPercentage = (progressBarAmount / progressBarGoal) * 100;
+      // оновлюємо інформацію у прогресс барі
+      progressBar.style.width = `${progressPercentage}%`;
+      progressLeft.textContent = `${progressBarAmount.toLocaleString()} ₴, ${Math.round(progressPercentage)}%`;
+      progressRight.textContent = `${progressBarGoal.toLocaleString()} ₴`;
+      // генеруємо QR-котика
+      const data = "https://send.monobank.ua/jar/" + monoApi.jarId;
+      const qrCodeURL = `https://quickchart.io/qr?text=${encodeURIComponent(data)}&margin=0`;
+      // додаємо його у віджет
+      document.getElementById("qrcode").src = qrCodeURL;
+    })
+    .catch((error) => {
+      console.error("Помилки при запиті:", error);
+    });
+
+  </script>
+</body>
+</html>
