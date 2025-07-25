@@ -105,6 +105,34 @@
       font-size: 14px;
     }
 
+    .donate-button {
+      background: linear-gradient(45deg, #ff6b6b, #ff8e53);
+      color: white;
+      border: none;
+      border-radius: 25px;
+      padding: 15px 30px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 20px;
+      box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+
+    .donate-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
+      background: linear-gradient(45deg, #ff8e53, #ff6b6b);
+    }
+
+    .donate-button:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 10px rgba(255, 107, 107, 0.4);
+    }
+
   </style>
 </head>
 <body>
@@ -134,10 +162,15 @@
     </div>
   </div>
 
+  <a href="#" id="donateButton" class="donate-button">
+    💰 Закинути 350 грн
+  </a>
+
   <script>
 
     // jar можна отримати на сторінці генерації віджету, скопіювавши параметр longJarId з url сторінки
     const url = "https://api.monobank.ua/bank/jar/4GC8zD2nynH4K5u1wzcKyfwJzGUTsKne";
+    const jarUrl = "https://send.monobank.ua/jar/8fWZJ79W4y"
 
     fetch(url)
     .then((response) => {
@@ -162,10 +195,11 @@
       progressLeft.textContent = `${progressBarAmount.toLocaleString()} ₴, ${Math.round(progressPercentage)}%`;
       progressRight.textContent = `${progressBarGoal.toLocaleString()} ₴`;
       // генеруємо QR-котика
-      const data = "https://send.monobank.ua/jar/" + monoApi.jarId;
-      const qrCodeURL = `https://quickchart.io/qr?text=${encodeURIComponent(data)}&margin=0`;
+      const qrCodeURL = `https://quickchart.io/qr?text=${encodeURIComponent(jarUrl)}&margin=0`;
       // додаємо його у віджет
       document.getElementById("qrcode").src = qrCodeURL;
+      // оновлюємо посилання кнопки донату
+      document.getElementById("donateButton").href = jarUrl;
     })
     .catch((error) => {
       console.error("Помилки при запиті:", error);
